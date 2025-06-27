@@ -38,3 +38,38 @@ model = MLP(784, [128, 64, 10])
 # print("Model output:", [o.data for o in output])
 # print("True lable:", y_train[0])
 
+# First forward pass in training loop
+for epoch in range(1):
+    total_loss = 0.0
+
+    for i in range(100):
+        # Wrap up input in Value
+        x = [Value(v) for v in X_train[i]]
+
+        # Need to convert the label to one-hot
+        y_true = [0.0] * 10
+        y_true[y_train[i]] = 1.0
+
+        # Forward Pass
+        y_pred = model(x)
+
+        # Compute loss: Mean Squared Error (MSE)
+        loss = sum((yp - yt)**2 for yp, yt in zip(y_pred, y_true))
+        total_loss += loss.data
+
+        # Backward pass
+        for p in model.parameters():
+            p.grad = 0.0 # make sure to zero the gradient before backprop
+        loss.backward()
+
+        # Gradient descent step
+        for p in model.parameters():
+            p.data -= 0.05 * p.grad # sets learning rate to 0.05
+
+        # print interval outputs to monitor
+        if i % 10 == 0:
+            print(f"Step {i} | Loss: {loss.data:.4f}")
+
+print(f"Epoch {epoch+1} complete | Average Loss: {total_loss / 100:.4f}")
+
+
