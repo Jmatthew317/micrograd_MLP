@@ -4,4 +4,26 @@
 # I followed his videos and wrote it alongside his instruction
 #
 
-import micrograd-mlp-with-pytorch 
+# Import my library, numpy, csv and pickle 
+from micrograd_mlp import MLP, Value
+import numpy as np
+import csv
+import pickle
+
+
+def load_mnist_csv(filepath):
+    with open(filepath, 'r') as f:
+        reader = csv.reader(f)
+        data = list(reader)
+    
+    data = np.array(data, dtype=np.float32) # This imports all the data and converts it from a string value to float32
+    x = data[:, 1:] / 255.0 # Normalize pixels to 0-1(
+    y = data[:, 0].astype(int) # create the Label
+    return x, y
+
+
+X_train, y_train = load_mnist_csv("../micrograd_MLP_data/MNIST_CSV/mnist_train.csv:")
+X_test, y_test = load_mnist_csv("../micrograd_MLP_data/MNIST_CSV/mnist_train.csv")
+
+print("Training set:", X_train.shape, y_train.shape)
+print("Test set:", X_test.shape, y_train.shape)
