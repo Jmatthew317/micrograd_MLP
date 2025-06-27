@@ -72,4 +72,15 @@ for epoch in range(1):
 
 print(f"Epoch {epoch+1} complete | Average Loss: {total_loss / 100:.4f}")
 
+# Prompt for input of saved pickle file
+filename = input("Enter the name for the saved model (don't add extension): ").strip()
+if not filename:
+    filename = "trained_micrograd_mlp" # default name if none input
+filename += ".pkl"
+
+
+# Save the model as a binary
+with open(filename, "wb") as f:
+    pickle.dump(model, f)
+print(f"Model saved to '{filename}'")
 
